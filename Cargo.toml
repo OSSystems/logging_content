@@ -1,0 +1,22 @@
+[package]
+name = "logging_content"
+version = "0.1.0"
+edition = "2018"
+authors = ["Jonathas-Conceicao <jonathas.conceicao@ossystems.com.br>"]
+license = "Apache-2.0"
+description = "API for interacting with the UpdateHub Cloud"
+repository = "https://github.com/OSSystems/logging_content"
+homepage = "https://github.com/OSSystems/logging_content"
+documentation = "https://docs.rs/logging_content"
+publish = false
+
+[dependencies]
+log = "0.4"
+
+[dev-dependencies]
+insta = "1"
+once_cell = "1"
+rand = "0.8"
+serial_test = "0.5"
+simplelog = "0.10"
+tempfile = "3"
