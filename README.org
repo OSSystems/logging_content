@@ -1,0 +1,45 @@
+#+Title: logging_content
+
+This is a library intendeted for making logging intermediary results of operations simpler,
+while also adding context to the current state of operations.
+Here are some code samples to show the library could be used:
+
+Start by adding the macro calls to where you wan't it's definition in:
+#+BEGIN_SRC rust
+  logging_content::trait_LogContent!();
+  logging_content::trait_LogDisplay!();
+  logging_content::impl_Result!();
+#+END_SRC
+
+And define how you wan't kown types to be displayed when logging:
+#+BEGIN_SRC rust
+impl<E: std::error::Error> LogDisplay for E {
+    fn as_log_display(&self, _: logging_content::Level) -> String {
+        format!("{} ({:?})", self, self)
+    }
+}
+#+END_SRC
+
+Then you can easily add some log calls without changing anything inside your `Result` type.
+#+BEGIN_SRC rust
+  // Import LogContent trait from where it was defined
+  use utils::log::LogContent;
+
+  let mut input = utils::io::timed_buf_reader(
+      chunk_size,
+      fs::File::open(source).log_error_msg("failed to open source file")?,
+  );
+  input.seek(SeekFrom::Start(skip)).log_error_msg("failed to seek source file")?;
+  let mut output = utils::io::timed_buf_writer(
+      chunk_size,
+      fs::OpenOptions::new()
+          .read(true)
+          .write(true)
+          .truncate(truncate)
+          .open(device)
+          .log_error_msg("failed to open output file")?,
+  );
+  output.seek(SeekFrom::Start(seek)).log_error_msg("failed to seek output file")?;
+#+END_SRC
+
+The [[examples/result_logging.rs][result_logging]] example shows a more self contained example.
