@@ -102,6 +102,7 @@ pub(crate) mod tests {
 
         // Some data structure
         #[derive(Debug)]
+        #[allow(dead_code)]
         struct Product {
             id: i32,
             project: String,
