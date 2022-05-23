@@ -23,6 +23,24 @@ macro_rules! impl_Option {
     };
 }
 
+#[macro_export]
+macro_rules! impl_Option_no_some {
+    () => {
+        $crate::impl_Option_no_some!(::log::Level);
+    };
+    ($log_level:ty) => {
+        impl<T> LogContent for Option<T> {
+            fn check_content(&self, level: $log_level) -> Option<String> {
+                match (self, level) {
+                    (None, <$log_level>::Error) => Some("None".to_owned()),
+                    (None, <$log_level>::Warn) => Some("None".to_owned()),
+                    _ => None,
+                }
+            }
+        }
+    };
+}
+
 #[test]
 #[serial_test::serial]
 fn load_env_vars() {
